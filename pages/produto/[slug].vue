@@ -132,7 +132,7 @@
 
 <script setup>
 import { ref } from 'vue'
-import { StarIcon } from '@heroicons/vue/20/solid'
+import { StarIcon } from '@heroicons/vue/20/solid/index.js'
 import { RadioGroup, RadioGroupLabel, RadioGroupOption } from '@headlessui/vue'
 
 const route = useRoute();
