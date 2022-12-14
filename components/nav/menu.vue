@@ -26,7 +26,7 @@
 </template>
 
 <script setup>
-import { ShoppingBagIcon } from '@heroicons/vue/24/outline'
+import { ShoppingBagIcon } from '@heroicons/vue/24/outline/index.js'
 const store = await useUserStore();
 const cart = useCart()
 </script>
