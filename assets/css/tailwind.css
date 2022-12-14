@@ -1,0 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    @apply scroll-smooth;
+    font-family: Inter, Helvetica, Arial, sans-serif;
+  }
+  h1{
+    @apply text-7xl;
+  }
+  h2{
+    @apply text-5xl;
+  }
+}
