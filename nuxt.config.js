@@ -14,5 +14,10 @@ export default defineNuxtConfig({
       },
     },
   },
-  modules: ['@nuxt/image-edge', '@nuxtjs/tailwindcss', '@pinia/nuxt'],
+  image: {
+    domains: [
+      'res.cloudinary.com'
+    ]
+  },
+  modules: ['@nuxt/image-edge', '@nuxtjs/tailwindcss', '@pinia/nuxt', 'nuxt-purgecss'],
 })
