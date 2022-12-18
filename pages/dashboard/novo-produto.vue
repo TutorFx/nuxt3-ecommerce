@@ -59,8 +59,8 @@
         </div>
       </div>
       <label class="block mb-4">
-        <div class="mb-3">imagens</div>
-        <ui-dropzone-multiple />
+        <div class="mb-3">Imagens</div>
+        <ui-dropzone-multiple v-model:dropzone-file="state.images" />
       </label>
       <label class="block mb-4">
         <div>cores</div>
@@ -114,13 +114,13 @@ export default {
       slug: "",
       details: "",
 
-      images: null,
-      colors: [
+      images: [],
+/*       colors: [
         { name: "White", class: "bg-white", selectedClass: "ring-gray-400" },
         { name: "Gray", class: "bg-gray-200", selectedClass: "ring-gray-400" },
         { name: "Black", class: "bg-gray-900", selectedClass: "ring-gray-900" },
-      ],
-      sizes: [
+      ], */
+/*       sizes: [
         { name: "XXS", inStock: false },
         { name: "XS", inStock: true },
         { name: "S", inStock: true },
@@ -129,13 +129,13 @@ export default {
         { name: "XL", inStock: true },
         { name: "2XL", inStock: true },
         { name: "3XL", inStock: true },
-      ],
-      highlights: [
+      ], */
+/*       highlights: [
         "Hand cut and sewn locally",
         "Dyed with our proprietary colors",
         "Pre-washed & pre-shrunk",
         "Ultra-soft 100% cotton",
-      ],
+      ], */
     });
     const rules = computed(() => {
       return {
@@ -166,6 +166,7 @@ export default {
         },
       };
     });
+    
     const money = {
       decimal: ",",
       thousands: ".",
@@ -174,40 +175,25 @@ export default {
       precision: 2,
       masked: false,
     };
+
     const v$ = useValidate(rules, state);
+
     const postProduct = async () => {
-      
-      
       state.price = parseFloat(state.price.replace(/\./g, '').replace(',', '.'))
-      state.images = [
+
+      const body = new FormData()
+      
+      state.images.forEach((file, index) => 
         {
-          src: "https://tailwindui.com/img/ecommerce-images/product-page-02-secondary-product-shot.jpg",
-          alt: "Two each of gray, white, and black shirts laying flat.",
-        },
-        {
-          src: "https://tailwindui.com/img/ecommerce-images/product-page-02-tertiary-product-shot-01.jpg",
-          alt: "Model wearing plain black basic tee.",
-        },
-        {
-          src: "https://tailwindui.com/img/ecommerce-images/product-page-02-tertiary-product-shot-02.jpg",
-          alt: "Model wearing plain gray basic tee.",
-        },
-        {
-          src: "https://tailwindui.com/img/ecommerce-images/product-page-02-featured-product-shot.jpg",
-          alt: "Model wearing plain white basic tee.",
-        },
-      ]
-      //console.log("foi", state);
+          body.append(`images-${index}`, file)
+        }
+      )
+      
+      body.append('dados',JSON.stringify(state));
+
       try {
-        await $fetch("/api/admin/product/create", {
-          method: "POST",
-          body: {
-            ...state
-          },
-        })
-      } catch ( err ){
-        
-      }
+        await $fetch("/api/admin/product/create", { method: "POST", body })
+      } catch ( err ){}
     };
     return { state, v$, postProduct, money };
   },

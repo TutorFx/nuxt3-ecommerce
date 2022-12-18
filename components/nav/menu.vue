@@ -17,10 +17,11 @@
           >
           <span class="sr-only">ver itens no carrinho</span>
         </span>
-
-      <span v-if="store.user.name" class="text-white">
-        Seja bem-vindo, {{ store.user.name }}
-      </span>
+      <nuxt-link to="/dashboard"> v-if="store.user.name">
+        <span class="text-white">
+          Seja bem-vindo, {{ store.user.name }}
+        </span>
+      </nuxt-link>
     </div>
   </header>
 </template>

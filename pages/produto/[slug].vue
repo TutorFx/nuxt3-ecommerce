@@ -20,18 +20,18 @@
       <!-- Image gallery -->
       <div class="mx-auto mt-6 max-w-2xl sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:gap-x-8 lg:px-8">
         <div v-if="product.images[0]" class="aspect-w-3 aspect-h-4 hidden overflow-hidden rounded-lg lg:block">
-          <img :src="product.images[0].src" :alt="product.images[0].alt" class="h-full w-full object-cover object-center" />
+          <nuxt-img :src="product.images[0].src" :alt="product.images[0].alt" class="h-full w-full object-cover object-center" />
         </div>
         <div class="hidden lg:grid lg:grid-cols-1 lg:gap-y-8">
           <div v-if="product.images[1]" class="aspect-w-3 aspect-h-2 overflow-hidden rounded-lg">
-            <img :src="product.images[1].src" :alt="product.images[1].alt" class="h-full w-full object-cover object-center" />
+            <nuxt-img :src="product.images[1].src" :alt="product.images[1].alt" class="h-full w-full object-cover object-center" />
           </div>
           <div v-if="product.images[2]" class="aspect-w-3 aspect-h-2 overflow-hidden rounded-lg">
-            <img :src="product.images[2].src" :alt="product.images[2].alt" class="h-full w-full object-cover object-center" />
+            <nuxt-img :src="product.images[2].src" :alt="product.images[2].alt" class="h-full w-full object-cover object-center" />
           </div>
         </div>
         <div v-if="product.images[3]" class="aspect-w-4 aspect-h-5 sm:overflow-hidden sm:rounded-lg lg:aspect-w-3 lg:aspect-h-4">
-          <img :src="product.images[3].src" :alt="product.images[3].alt" class="h-full w-full object-cover object-center" />
+          <nuxt-img :src="product.images[3].src" :alt="product.images[3].alt" class="h-full w-full object-cover object-center" />
         </div>
       </div>
 
@@ -145,8 +145,8 @@ const productData = () => (
 {
   name,
   description,
-  imageSrc: images[0].src,
-  imageAlt: images[0].alt,
+  imageSrc: images[0]?.src,
+  imageAlt: images[0]?.alt,
   price,
   _id,
   size: selectedSize,

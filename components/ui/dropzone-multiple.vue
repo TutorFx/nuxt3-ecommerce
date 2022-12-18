@@ -1,65 +1,97 @@
 <template>
-  <div @drop.prevent="drop" @change="selectedFile">
+  <div>
+    <div @drop.prevent="drop" @change="selectedFile">
+      <div
+        @dragenter.prevent="toggleActive"
+        @dragleave.prevent="toggleActive"
+        @dragover.prevent
+        @drop.prevent="toggleActive"
+        :class="{ 'active-dropzone': active }"
+        class="dropzone"
+      >
+        <span>Arraste</span>
+        <span>ou</span>
+        <label for="dropzoneFile" class="rounded-md">Selecione seu Arquivo</label>
+        <input type="file" id="dropzoneFile" ref="dropRef" class="dropzoneFile" />
+      </div>
+    </div>
     <div
-      @dragenter.prevent="toggleActive"
-      @dragleave.prevent="toggleActive"
-      @dragover.prevent
-      @drop.prevent="toggleActive"
-      :class="{ 'active-dropzone': active }"
-      class="dropzone"
+      v-if="dropzoneFile?.length > 0"
+      ref="parent"
+      @click.prevent
+      class="grid gap-4 grid-cols-3 mt-4 mb-4"
     >
-      <span>Drag or Drop File</span>
-      <span>OR</span>
-      <label for="dropzoneFile">Select File</label>
-      <input type="file" id="dropzoneFile" class="dropzoneFile" />
+      <div
+        class="rounded-lg relative"
+        style="aspect-ratio: 1"
+        v-for="(image, i) in dropzoneFile"
+        :key="i"
+      >
+        <nuxt-img
+          v-if="image"
+          class="object-cover rounded-lg w-full h-full"
+          :src="url.createObjectURL(image)"
+        />
+        <XMarkIcon
+          class="absolute right-0 top-0 h-6 w-6 bg-white rounded-full m-2 p-1"
+          @click="dropzoneFile.splice(i, 1)"
+        />
+      </div>
     </div>
   </div>
-  <div>
-    <span class="max-w-4 max-h-4 aspect-square bg-gray-500" v-for="(image, i) in dropzoneFile" :key="i"
-      ><nuxt-img
-        width="200px"
-        height="200px"
-        class="object-cover"
-        :src="URL.createObjectURL(image)"
-      ></nuxt-img
-    ></span>
-  </div>
 </template>
+<script setup>
+import { XMarkIcon } from "@heroicons/vue/24/outline/index.js";
+import { useAutoAnimate } from "@formkit/auto-animate/vue";
 
-<script>
-import { ref } from "vue";
-export default {
-  name: "DropZone",
-  setup() {
-    const active = ref(false);
-
-    const toggleActive = () => {
-      active.value = !active.value;
-    };
-
-    let dropzoneFile = ref([]);
-
-    const drop = (e) => {
-      if (!e.dataTransfer.files[0].type.startsWith("image/")) return console.error("The dropped file is not an image!");
-      if (e.dataTransfer.files[0].size > 5242880) return console.error("The dropped file is larger than 5MB!");
-        dropzoneFile.value.push(e.dataTransfer.files[0]);
-      
-    };
-    const selectedFile = () => {
-      try {
-        const file = document.querySelector(".dropzoneFile").files[0];
-        if (!file.type.startsWith("image/")) return console.error("The selected file is not an image!");
-        if (file.size > 5242880) return console.error("The dropped file is larger than 5MB!");
-          dropzoneFile.value.push(file);
-      } catch (e){
-        console.error("Selection stopped by user.");
-      }
-      
-    };
-
-    return { active, toggleActive, dropzoneFile, drop, selectedFile, URL };
+const emit = defineEmits(["update:dropzoneFile"]);
+const props = defineProps({
+  dropzoneFile: {
+    required: true,
+    type: Array,
   },
+}); 
+const dropzoneFile = ref(props.dropzoneFile);
+const dropRef = ref(null);
+
+
+const active = ref(false);
+const toggleActive = () => {
+  active.value = !active.value;
 };
+
+let url = URL;
+
+const drop = (e) => {
+  if (!e.dataTransfer.files[0].type.startsWith("image/"))
+    return console.error("The dropped file is not an image!");
+  if (e.dataTransfer.files[0].size > 5242880)
+    return console.error("The dropped file is larger than 5MB!");
+  dropzoneFile.value.push(e.dataTransfer.files[0]);
+};
+const selectedFile = () => {
+  try {
+    const file = dropRef.value.files[0];
+    if (!file.type.startsWith("image/"))
+      return console.error("The selected file is not an image!");
+    if (file.size > 5242880)
+      return console.error("The dropped file is larger than 5MB!");
+    dropzoneFile.value.push(file);
+  } catch (e) {
+    console.error("Selection stopped by user.");
+  }
+};
+// emit to parent on change
+
+watch(
+  () => dropzoneFile,
+  (newValue, oldValue) => {
+    emit("update:dropzoneFile", newValue);
+  },
+  { deep: true }
+);
+// animate
+const [parent] = useAutoAnimate();
 </script>
 
 <style scoped lang="scss">
@@ -90,11 +122,11 @@ export default {
 .active-dropzone {
   color: #fff;
   border-color: #fff;
-  background-color: #41b883;
+  @apply bg-black border-none;
 
   label {
     background-color: #fff;
-    color: #41b883;
+    @apply text-black;
   }
 }
 </style>

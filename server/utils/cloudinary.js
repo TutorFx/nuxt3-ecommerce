@@ -5,8 +5,8 @@ import { v2 as _cloudinary } from "cloudinary"
 const cloudinary = () => {
 
     _cloudinary.config({
-        cloud_name: 'djmigxrfv', 
-        api_key: '821474998742543',
+        cloud_name: process.env.CLOUDINARY_NAME, 
+        api_key: process.env.CLOUDINARY_KEY,
         api_secret: process.env.CLOUDINARY_SECRET
     })
 
