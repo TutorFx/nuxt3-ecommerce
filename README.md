@@ -23,6 +23,9 @@ PRIVATE_KEY="<your password to hash user's data>"
 MONGODB_URI="<Mongodb URI(ATLAS or Localhost)>"
 MAIL_USER="<SendinBlue username>"
 MAIL_PASS="<SendinBlue password>"
+CLOUDINARY_NAME="<Cloudinary ID>"
+CLOUDINARY_KEY="Cloudinary KEY"
+CLOUDINARY_SECRET="Cloudinary Secret"
 ```
 Install dependencies using `npm install` or `yarn install`
 Start the application using `npm run dev` or `yarn dev`
