@@ -44,6 +44,7 @@
     "postcss": "^8.4.19",
     "sass": "^1.56.1",
     "tailwindcss": "^3.2.4",
-    "v-money": "^0.8.1"
+    "v-money": "^0.8.1",
+    "vue-toastification": "^2.0.0-rc.5"
   }
 }
