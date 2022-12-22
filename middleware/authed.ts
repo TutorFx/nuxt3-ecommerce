@@ -9,6 +9,9 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 
     const cookieHeader = event?.node.req.headers["cookie"] || "";
     const cookies = cookie.parse(cookieHeader);
+
+    console.log(cookies["token"])
+
     if(!cookies["token"]) return '/login';
 
     var user = event?.context.user

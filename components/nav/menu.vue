@@ -17,7 +17,7 @@
           >
           <span class="sr-only">ver itens no carrinho</span>
         </span>
-      <nuxt-link to="/dashboard"> v-if="store.user.name">
+      <nuxt-link to="/dashboard" v-if="store.user.loggedIn">
         <span class="text-white">
           Seja bem-vindo, {{ store.user.name }}
         </span>
