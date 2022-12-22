@@ -178,6 +178,8 @@ export default {
 
     const v$ = useValidate(rules, state);
 
+    //Toast("I'm a toast", { position: POSITION.BOTTOM_LEFT });
+
     const postProduct = async () => {
       state.price = parseFloat(state.price.replace(/\./g, '').replace(',', '.'))
 
@@ -190,7 +192,7 @@ export default {
       )
       
       body.append('dados',JSON.stringify(state));
-
+  
       try {
         await $fetch("/api/admin/product/create", { method: "POST", body })
       } catch ( err ){}
