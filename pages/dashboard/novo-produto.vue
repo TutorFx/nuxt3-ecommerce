@@ -100,6 +100,8 @@ import useValidate from "@vuelidate/core";
 import { required, minLength, helpers } from "@vuelidate/validators";
 import { reactive, computed } from "vue";
 import { VMoney } from "v-money";
+import { useToast } from 'vue-toastification'
+const toast = useToast()
 export default {
   setup() {
     definePageMeta({
@@ -164,6 +166,12 @@ export default {
             required
           ),
         },
+        images: {
+          required: helpers.withMessage(
+            "Ao menos uma imagem é necessária.",
+            required
+          ),
+        }
       };
     });
     
@@ -192,10 +200,18 @@ export default {
       )
       
       body.append('dados',JSON.stringify(state));
-  
-      try {
-        await $fetch("/api/admin/product/create", { method: "POST", body })
-      } catch ( err ){}
+      if(!v$.value.$silentErrors.length > 0){
+        try {
+          await $fetch("/api/admin/product/create", { method: "POST", body });
+          toast.success('Product Created')
+        } catch ( err ){
+          toast.error(`Error creating product: ${err}`)
+        }
+      } else {
+        v$.value.$silentErrors.reverse().forEach(element => {
+          toast.error(element.$message)
+        });
+      }
     };
     return { state, v$, postProduct, money };
   },

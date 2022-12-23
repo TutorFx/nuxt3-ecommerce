@@ -107,7 +107,8 @@
 </template>
 
 <script>
-
+import { useToast } from 'vue-toastification'
+const toast = useToast()
 export default {
   setup() {
     const userStore = useUserStore()
@@ -117,7 +118,7 @@ export default {
   data: () => ({
     email: "",
     password: "",
-    loading: false
+    loading: false,
   }),
   methods: {
     async handleLogin(email, password) {
@@ -133,12 +134,14 @@ export default {
           //console.log(response);
           this.loading = false;
           console.log(response.user);
-          await this.userStore.login(response.user)
+          await this.userStore.login(response.user);
+          toast.success(response.user.name);
           return navigateTo("/");
         })
         .catch((error) => {
           console.log(error);
           this.loading = false;
+          toast.error(error);
         });
     }
   },

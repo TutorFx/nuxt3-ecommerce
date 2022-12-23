@@ -11,13 +11,24 @@ export const useUserStore = defineStore('user', {
   },
   actions: {
     async get() {
-      const userData = await useUserData();
-      const user: typedUser | any = userData.user
-      this.user = {loggedIn: true, ...user}
+      if(useCookie('token').value){
+        const userData = await useUserData();
+        const user: typedUser | any = userData.user
+        
+        this.user = {loggedIn: true, ...user}
+      } else {
+        this.user = {
+          loggedIn: false
+        }
+      }
     },
     async set(data: object) {
       try{
-        this.user = {loggedIn: true, ...data._doc}
+        if (data && typeof data == 'object') { 
+          this.user = {loggedIn: true, ...data._doc} 
+        } else {
+          throw new Error(`Invalid data`)
+        }
       } catch(err){
         this.user = {
           loggedIn: false
